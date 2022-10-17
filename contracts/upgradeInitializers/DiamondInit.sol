@@ -9,10 +9,13 @@ pragma solidity ^0.8.0;
 /******************************************************************************/
 
 import {LibDiamond} from "../libraries/LibDiamond.sol";
+import {LibAuctionFactory} from "../libraries/LibAuctionFactory.sol";
 import { IDiamondLoupe } from "../interfaces/IDiamondLoupe.sol";
 import { IDiamondCut } from "../interfaces/IDiamondCut.sol";
+import {LibSwap} from "../libraries/LibSwap.sol";
 import { IERC173 } from "../interfaces/IERC173.sol";
 import { IERC165 } from "../interfaces/IERC165.sol";
+import { IERC20 } from "../interfaces/IERC20.sol";
 
 // It is exapected that this contract is customized if you want to deploy your diamond
 // with data from a deployment script. Use the init function to initialize state variables
@@ -30,12 +33,16 @@ contract DiamondInit {
         ds.supportedInterfaces[type(IDiamondLoupe).interfaceId] = true;
         ds.supportedInterfaces[type(IERC173).interfaceId] = true;
 
-        // add your own state variables 
-        // EIP-2535 specifies that the `diamondCut` function takes two optional 
-        // arguments: address _init and bytes calldata _calldata
-        // These arguments are used to execute an arbitrary function using delegatecall
-        // in order to set state variables in the diamond during deployment or an upgrade
-        // More info here: https://eips.ethereum.org/EIPS/eip-2535#diamond-interface 
+        // Init state varibles for the auction factory
+
+        LibAuctionFactory.AuctionDiamondStorage storage as_ = LibAuctionFactory.diamondStorage();
+        as_.implementation = 0x115f8D9e66F5DC0A5eCa647bF3a0dc690e2dc5a5;
+
+
+        // Init for the swap facet
+
+        LibSwap.SwapDiamondStorage storage ss = LibSwap.diamondStorage();
+        ss.token = IERC20(0x115f8D9e66F5DC0A5eCa647bF3a0dc690e2dc5a5);
     }
 
 

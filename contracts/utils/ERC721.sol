@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v4.7.0) (token/ERC721/ERC721.sol)
-
 pragma solidity ^0.8.0;
 
-import "../utils/ERC721.sol";
+
 import "../interfaces/IERC721Receiver.sol";
 import "../interfaces/IERC721Metadata.sol";
 import "../libraries/Address.sol";
@@ -11,11 +9,8 @@ import "../utils/Context.sol";
 import "../libraries/Strings.sol";
 import "../libraries/AppStorage.sol";
 
-/**
- * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
- * the Metadata extension, but not including the Enumerable extension, which is available separately as
- * {ERC721Enumerable}.
- */
+
+
 contract ERC721 is Context, IERC721Metadata {
     using Address for address;
     using Strings for uint256;
