@@ -11,7 +11,7 @@ import "../libraries/AppStorage.sol";
 
 
 
-contract ERC721 is Context, IERC721Metadata {
+abstract contract ERC721 is Context, IERC721Metadata {
     using Address for address;
     using Strings for uint256;
 
