@@ -10,6 +10,7 @@ pragma solidity ^0.8.0;
 
 import {LibDiamond} from "../libraries/LibDiamond.sol";
 import {LibAuctionFactory} from "../libraries/LibAuctionFactory.sol";
+import {LibMarket} from "../libraries/LibMarket.sol";
 import { IDiamondLoupe } from "../interfaces/IDiamondLoupe.sol";
 import { IDiamondCut } from "../interfaces/IDiamondCut.sol";
 import {LibSwap} from "../libraries/LibSwap.sol";
@@ -25,7 +26,7 @@ contract DiamondInit {
 
     // You can add parameters to this function in order to pass in 
     // data to set your own state variables
-    function init() external {
+    function init(address _auctionImp, address protocolToken, address _listTo) external {
         // adding ERC165 data
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
         ds.supportedInterfaces[type(IERC165).interfaceId] = true;
@@ -36,13 +37,19 @@ contract DiamondInit {
         // Init state varibles for the auction factory
 
         LibAuctionFactory.AuctionDiamondStorage storage as_ = LibAuctionFactory.diamondStorage();
-        as_.implementation = 0x115f8D9e66F5DC0A5eCa647bF3a0dc690e2dc5a5;
+        as_.implementation = _auctionImp;
 
 
         // Init for the swap facet
 
         LibSwap.SwapDiamondStorage storage ss = LibSwap.diamondStorage();
-        ss.token = IERC20(0x115f8D9e66F5DC0A5eCa647bF3a0dc690e2dc5a5);
+        ss.token = IERC20(protocolToken);
+
+        // Init for the Marketplace facet 
+
+        LibMarket.MarketDiamondStorage storage ms = LibMarket.diamondStorage();
+        ms.listingPrice = 1 ether; // the listing price is one Matic
+        ms.listTo = _listTo;
     }
 
 
